@@ -6,7 +6,9 @@ import '../../style/index.css'
 
 export default function ChatPage(prop){
     const [token, setToken] = useState(localStorage.getItem('token-demo-dream'))
+
     const [username, setUsername] = useState(undefined)
+    const [chats, setChats] = useState([])
 
     useEffect(() => {
         if (!token) location.href = '/login'
@@ -33,8 +35,25 @@ export default function ChatPage(prop){
             setUsername(data.currentUser.name)
         })
 
+        fetch('http://localhost:3000/fetch-chats',{
+            method:"POST",
+            headers: {
+                "Content-Type":"application/json"
+            },
+            body: JSON.stringify({token})
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log(data.chats)
+            setChats(data.chats)
+        })
+
 
     },[])
+
+    useEffect(() =>  {
+        console.log(chats)
+    },[chats])
     
 
     function utenteNonAuth(){
@@ -54,6 +73,9 @@ export default function ChatPage(prop){
                         <div className="connection-status"></div>
                     </div>
                 </div>
+                {chats.map( (chat,index) => {
+                    return <div key={index}> {chat.mittente} </div>
+                })}
             </div>
             <div className="container-chat">
                 <div className="topbar-chat">
