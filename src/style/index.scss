@@ -1,0 +1,305 @@
+@import url('https://fonts.googleapis.com/css2?family=Questrial&display=swap');
+
+body{
+    margin: 0;
+    padding: 0;
+    font-family: 'Questrial', sans-serif;
+}
+
+
+//Mixers
+
+@mixin fullscreen(){
+    height: 100vh;
+    width: 100vw;
+}
+@mixin center($direction){
+    display: flex;
+    flex-direction: $direction;
+    justify-content: center;
+    align-items: center;
+}
+
+$text: #fff;
+
+//Header
+
+header{
+    width: calc(100vw - 60px);
+    height: 50px;
+    padding: 5px 30px;
+
+    position: fixed;
+    top: 0;
+    left: 0;
+
+    display: flex;
+    flex-direction: column;
+    background-color: #24242467;
+    backdrop-filter: blur(30px);
+    justify-content: center;
+
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.264);
+    user-select: none;
+}
+
+.logo{
+    font-size: 40px;
+}
+
+.container-left{
+    display: flex;
+    flex-direction: row;
+    gap:20px
+}
+
+.container-links{
+    min-width: 250px;
+    height: 100%;
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap:10px;
+
+    font-size: 18px;
+    color: white;
+
+    box-sizing: content-box;
+    cursor: pointer;
+
+    transition: 300ms;
+}
+
+.links-a:hover{
+    border-bottom: 1px solid white;
+}
+
+
+// Login Page
+
+.body-login{
+    @include fullscreen();
+    @include center(column);
+    background: linear-gradient(45deg,#171717, #1a1a1af5, rgba(15, 15, 15, 0.732)), url('../assets/background_login.jpg');
+
+}
+
+.form-login{
+    min-height: 400px;
+    width: calc(100vw - 300px);
+    color: $text;
+
+    padding-left: 300px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    user-select: none;
+
+}
+
+.titolo-login{
+    font-size: 50px;
+    margin-bottom: 15px;
+}
+
+.sottotitolo-login{
+    font-size: 20px;
+    margin-bottom: 15px;
+}
+
+.container-login{
+    width: 400px;
+    min-height: 100px;
+
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.container-input-login{
+    height: 60px;
+    border-radius: 9px;
+    background-color: #5b5b5b;
+    display: flex;
+    flex-direction: column;
+
+}
+
+.container-input-login label{
+
+    width: 100px;
+    height: 35px;
+    position: relative;
+    left: 20px;
+    top: 8px;
+    z-index: 2;
+
+    font-size: 14px;
+    
+}
+
+.container-input-login input{
+    min-height: 55px;
+    background: none;
+    border: none;
+    border-radius: 9px;
+    text-indent: 20px;
+
+    font-size: 18px;
+    color: $text;
+}
+
+.container-input-login input:focus{
+    outline: none;
+}
+
+.button-login{
+    min-height: 60px;
+    border-radius: 9px;
+    border: none;
+
+    background-color: tomato;
+    font-size: 18px;
+    color: $text;
+
+    transition: 200ms;
+
+    cursor: pointer;
+}
+.button-login:hover{
+    background-color: rgba(255, 99, 71, 0.76);
+}
+.button-login:active{
+    background-color: rgb(255, 162, 146);
+}
+
+.error-login{
+    width: 100%;
+    @include center(row);
+    color: tomato;
+}
+
+.hidden{
+    display: none;
+}
+
+//Chatapp
+
+.chatapp{
+    width: 900px;
+    height: 600px;
+    border-radius: 20px;
+
+    background-color: #24242493;
+    backdrop-filter: blur(20px);
+
+    @include center(row);
+    gap: 10px;
+}
+
+.container-chat-attive{
+    width: 330px;
+    height: 580px;
+    background-color: #171717;
+    border-radius: 20px;
+}
+
+.container-chat{
+    width: 540px;
+    height: 580px;
+    background-color: #171717;
+    border-radius: 20px;
+
+    display: flex;
+    flex-direction: column;
+}
+
+.topbar-chat{
+    width: calc(100% - 60px);
+    height: 9%;
+
+    background-color: rgb(78, 78, 78);
+
+    border-top-right-radius: 20px ;
+    border-top-left-radius: 20px ;
+
+    padding: 0px 30px;
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 15px;
+    
+    color: $text;
+}
+
+.foto-dm-chat{
+    height: 35px;
+    width: 35px;
+    border-radius: 50%;
+
+    object-fit: contain;
+    object-position: center center
+}
+
+.live-chat{
+    width: 100%;
+    height: 83%;
+    border-top-right-radius: 20px ;
+    border-top-left-radius: 20px ;
+}
+
+.toolbar-chat{
+    height: 8%;
+    width: 100%;
+    background-color: rgb(78, 78, 78);
+
+    border-bottom-right-radius: 20px ;
+    border-bottom-left-radius: 20px ;
+    
+    @include center((row));
+    gap: 10px;
+}
+
+.toolbar-chat input{
+    width: 370px;
+    height: 60%;
+
+    border-radius: 10px;
+    border: none;
+
+    text-indent: 10px;
+    font-size: 18px ;
+
+    background-color: #242424;
+    color: rgba(255, 255, 255, 0.614);
+}
+
+.toolbar-chat input:focus{
+    outline: none;
+}
+
+.toolbar-chat button{
+    width: 100px;
+    height: 65%;
+    border-radius: 10px;
+    border: none;
+    font-size: 18px ;
+    background-color: #242424;
+    color: rgba(255, 255, 255, 0.614);
+}
+
+.container-nome{
+    @include center(row);
+    gap:5px;
+}
+
+.connection-status{
+    height: 7px;
+    width: 7px;
+    background-color: greenyellow;
+    border-radius: 50%;
+}
