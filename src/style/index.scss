@@ -241,16 +241,68 @@ header{
     width: 35px;
     border-radius: 50%;
 
-    object-fit: contain;
+    object-fit: cover;
     object-position: center center
 }
 
 .live-chat{
-    width: 100%;
-    height: 83%;
+    width: calc(100% - 20px);
+    height: calc(83% - 20px);
     border-top-right-radius: 20px ;
     border-top-left-radius: 20px ;
+
+    padding: 10px;
+    
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    overflow-y: scroll;
 }
+
+.message-container {
+    min-height: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+
+.bubble-message{
+    min-height: 10px;
+    min-width: 40px;
+    max-width: calc(100% / 1.5 - 20px);
+
+    padding: 13px 20px;
+    margin-bottom: 10px;
+    border-radius: 18px;
+
+    background-color: #242424; 
+    color: rgba(255, 255, 255, 0.868);
+    
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+
+}
+
+.my-message{
+    background-color: #075e54;
+    align-self: flex-end;
+}
+
+.external-message{
+    background-color: #242424; 
+    align-self: flex-start;
+}
+
+.messagesEndRef{
+    height: 10px;
+    width: 10px;
+    transform: translateY(-10px);
+}
+
+
 
 .toolbar-chat{
     height: 8%;
@@ -303,3 +355,88 @@ header{
     background-color: greenyellow;
     border-radius: 50%;
 }
+
+// Container (BARRA LATERALE) Chat Preview
+
+.container-chat-preview{
+    height: 80px;
+    background-color: rgb(78, 78, 78);
+    border-top: .5px rgba(255, 255, 255, 0.445) solid;
+    box-sizing: border-box;
+
+    padding: 0px 5px;
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    gap: 10px;
+    user-select: none;
+
+    cursor: pointer;
+}
+
+
+.foto-utente-preview{
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+    object-position: center;
+
+}
+
+.container-dettagli-preview{
+    width: 70%;
+    height: 50px;
+    color: white;
+
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    
+    justify-content: center;
+
+    
+}
+
+.nome-utente-preview{
+    font-size: 20px;
+}
+
+.messaggio-preview{
+    max-width: 100%;
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.438);
+}
+
+
+
+
+/* Gestisci autofill (for Chrome and newer Edge) */
+input[type="email"]:-webkit-autofill,
+input[type="email"]:-webkit-autofill:hover,
+input[type="email"]:-webkit-autofill:focus,
+input[type="email"]:-webkit-autofill:active,
+input[type="password"]:-webkit-autofill,
+input[type="password"]:-webkit-autofill:hover,
+input[type="password"]:-webkit-autofill:focus,
+input[type="password"]:-webkit-autofill:active {
+  -webkit-text-fill-color: #ffffff; /* Control text color */
+  transition: background-color 5000s ease-in-out 0s, -webkit-text-fill-color 5000s ease-in-out 0s;
+}
+
+
+/*  (Firefox) */
+input[type="email"]:-moz-placeholder,
+input[type="password"]:-moz-placeholder {
+  color: #ffffff; /* Control text color */
+}
+
+/*  ( Safari) */
+input[type="email"]:-webkit-input-placeholder,
+input[type="password"]:-webkit-input-placeholder {
+  color: #ffffff; /* Control text color */
+}
+
+
