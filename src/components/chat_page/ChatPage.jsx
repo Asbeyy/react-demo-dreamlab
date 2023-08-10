@@ -131,6 +131,7 @@ export default function ChatPage(prop){
                 chats={chats}
                 selectChat={handleChatSelect}
             />
+            
             <LiveChat
                 currentChatUser={selectedChat.name}
                 currentChatPhoto={selectedChat.foto}
@@ -161,7 +162,7 @@ function ChatBar(props){
                 key={chat.id_chat + index}
                 mittente={chat.mittente}
                 foto={chat.foto_mittente}
-                ultimo_messaggio={chat.ultimo_messaggio.message}
+                ultimo_messaggio={ chat.ultimo_messaggio.message}
                 id={chat.id_chat}
                 selectChat={props.selectChat}
             /> 
@@ -244,7 +245,7 @@ function LiveChat(props){
         return
     }
 
-    if(scrollTop <= 15){
+    if(scrollTop <= 200){
         setLoadedMessagesCount((prevCount) => prevCount + 10);
     }
   }
@@ -258,38 +259,41 @@ function LiveChat(props){
 
 
     return(
-        <div className="container-chat">
 
-            <div className="topbar-chat">
-                <img src={props.currentChatPhoto || noPic} className="foto-dm-chat" />
-                <h4>{props.currentChatUser}</h4>
-            </div>
-
-            <div className="live-chat" onScroll={handleLoadMoreMessages}>
-                <div className="message-container">
-                    {messagesArray.map((message, index) => (
-                       
-                            <div
-                                key={`${message.date}+${message.message}`}
-                                className={`bubble-message ${message.sender_id === props.iam ? 'my-message' : 'external-message'}`}
-                                >
-                                <Message
-                                    message={message.message}  
-                                    />
-                            </div>
-                        
-                    ))}
+        <>
+        {/* Conditional Rendering, se non hai selezionato chat, display solo  */}
+            {props.currentChatId === undefined ? null : 
+            <div className="container-chat">
+                <div className="topbar-chat">
+                    <img src={props.currentChatPhoto || noPic} className="foto-dm-chat" />
+                    <h4>{props.currentChatUser}</h4>
                 </div>
-                <div className="messagesEndRef" ref={messagesEndRef}>&nbsp;</div>
-            </div>
 
-            <SendMessageToolBar
-                iam={props.iam}
-                chat_id={props.currentChatId}
-                onSend={handleSendMessage}
-            />
+                <div className="live-chat" onScroll={handleLoadMoreMessages}>
+                    <div className="message-container">
+                        {messagesArray.map( message => (
+                        
+                                <div
+                                    key={`${message.date}+${message.message}`}
+                                    className={`bubble-message ${message.sender_id === props.iam ? 'my-message' : 'external-message'}`}
+                                    >
+                                    <Message
+                                        message={message.message}  
+                                        />
+                                </div>
+                            
+                        ))}
+                    </div>
+                    <div className="messagesEndRef" ref={messagesEndRef}></div>
+                </div>
 
-        </div>
+                <SendMessageToolBar
+                    iam={props.iam}
+                    chat_id={props.currentChatId}
+                    onSend={handleSendMessage}
+                />
+            </div>}
+        </>
     )
 }
 

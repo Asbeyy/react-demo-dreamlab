@@ -189,11 +189,12 @@ header{
 //Chatapp
 
 .chatapp{
-    width: 900px;
+    width: auto;
     height: 600px;
     border-radius: 20px;
+    padding: 0px 10px;
 
-    background-color: #24242493;
+    background-color: #7d303093;
     backdrop-filter: blur(20px);
 
     @include center(row);

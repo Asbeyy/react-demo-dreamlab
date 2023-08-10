@@ -158,10 +158,11 @@ header {
 }
 
 .chatapp {
-  width: 900px;
+  width: auto;
   height: 600px;
   border-radius: 20px;
-  background-color: rgba(36, 36, 36, 0.5764705882);
+  padding: 0px 10px;
+  background-color: rgba(125, 48, 48, 0.5764705882);
   -webkit-backdrop-filter: blur(20px);
           backdrop-filter: blur(20px);
   display: flex;
