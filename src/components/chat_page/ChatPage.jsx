@@ -87,7 +87,10 @@ export default function ChatPage(prop){
             console.log(data)
           // Controlla che il messaggio ricevuto sia per la chat corrente
           if (data.chatIdentifier === selectedChat.id) {
-              setDownloadedMessages(data.messages);  
+              setDownloadedMessages(data.messages);
+               // Dispatch a custom event to notify ChatBar about chat selection
+            const event = new CustomEvent('chatPreviewClicked');
+            window.dispatchEvent(event);
             }
         });
     
@@ -203,18 +206,21 @@ function LiveChat(props){
  const [loadedMessagesCount, setLoadedMessagesCount] = useState(10);
  const [socket,setSocket] = useState(io("http://172.22.12.13:3000"))
  const messagesStartRef = useRef(null);
+ const [firstTime,setFirstTime] = useState(true)
 
 
 
     //Setup event listenet x scrollBottom on ChatPreview click
- useEffect(() => {
+    useEffect(() => {
     function handleChatPreviewClicked() {
+
+        setLoadedMessagesCount(10)
         setTimeout(()=>{
             scrollToBottom();
         },200)
-        console.log("CLICK MI CHIEDI")
     }
     window.addEventListener('chatPreviewClicked', handleChatPreviewClicked);
+    window.addEventListener('scrollToBottom', scrollToBottom)
 
     return () => {
         window.removeEventListener('chatPreviewClicked', handleChatPreviewClicked);
@@ -225,20 +231,21 @@ function LiveChat(props){
   useEffect(() => {
     const visibleMessages = props.messages.slice(-loadedMessagesCount);
     setMessagesArray(visibleMessages);
+    
   }, [props.messages, loadedMessagesCount]);
 
   //Infinite Scroll
   function handleLoadMoreMessages(event) {
     const {scrollTop} = event.target
 
-    if(scrollTop <= 0){
+    if(firstTime){
+        scrollToBottom()
+        setFirstTime(false)
+        return
+    }
+
+    if(scrollTop <= 15){
         setLoadedMessagesCount((prevCount) => prevCount + 10);
-        //il delay e per contrastart scrollToBottom, //!Da Refactor..
-        if (messagesStartRef.current) {
-            messagesStartRef.current.scrollIntoView({ block: "start",
-            inline: "start", });
-            
-        }
     }
   }
   function handleSendMessage(newMessageArray){
@@ -261,17 +268,16 @@ function LiveChat(props){
             <div className="live-chat" onScroll={handleLoadMoreMessages}>
                 <div className="message-container">
                     {messagesArray.map((message, index) => (
-                        <>
+                       
                             <div
-                                key={`${message.date}+${message.message}`} 
+                                key={`${message.date}+${message.message}`}
                                 className={`bubble-message ${message.sender_id === props.iam ? 'my-message' : 'external-message'}`}
                                 >
                                 <Message
                                     message={message.message}  
                                     />
                             </div>
-                            {(index === messagesArray.length - loadedMessagesCount  + 9 ) ? <div ref={messagesStartRef}></div> : null}
-                        </>
+                        
                     ))}
                 </div>
                 <div className="messagesEndRef" ref={messagesEndRef}>&nbsp;</div>
