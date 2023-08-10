@@ -1,6 +1,6 @@
 import { useState,useEffect,useRef } from "react";
 import { io } from 'socket.io-client'
-import noPic from '../../../assets/no-pfp.png'
+import noPic from '../../assets/no-pfp.png'
 
 function LiveChat(props){
     const [messagesArray, setMessagesArray] = useState([])

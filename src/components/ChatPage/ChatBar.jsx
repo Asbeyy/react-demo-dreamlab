@@ -1,4 +1,4 @@
-import noPic from '../../../assets/no-pfp.png'
+import noPic from '../../assets/no-pfp.png'
 
 import { useState,useEffect } from 'react'
 
