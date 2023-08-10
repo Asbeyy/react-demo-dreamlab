@@ -14,7 +14,7 @@ export default function RegisterPage(){
     }
 
     function postRegister(email,password,name){
-        fetch("http://localhost:3000/create-user",{
+        fetch("http://172.22.12.13:3000/create-user",{
             method: "POST",
             headers:{
                 "Content-type":"application/json"

@@ -20,7 +20,7 @@ export default function LoginPage(){
     }
 
     function postLogin(email,password){
-        fetch("http://localhost:3000/login",{
+        fetch("http://172.22.12.13:3000/login",{
             method: "POST",
             headers:{
                 "Content-type":"application/json"

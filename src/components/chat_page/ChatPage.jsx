@@ -15,7 +15,9 @@ export default function ChatPage(prop){
     const [selectedChat, setSelectedChat] = useState({id: undefined, name: undefined, foto: undefined})
     const [downloadedMessages, setDownloadedMessages] = useState([])
 
+    const [socket, setSocket] = useState(null)
 
+  
 
     useEffect(() => {
         if (!token) location.href = '/login'
@@ -29,7 +31,7 @@ export default function ChatPage(prop){
         //Se user loggato entra in /chat senza query
         !tokenQuery ? tokenQuery = token : null
 
-        fetch('http://localhost:3000/auth', {
+        fetch('http://172.22.12.13:3000/auth', {
             method:"POST",
             headers:{
                 "Content-Type":"application/json"
@@ -38,12 +40,12 @@ export default function ChatPage(prop){
         })
         .then(response => response.json())
         .then(data => {
-            data.error ? utenteNonAuth() : console.log("Utente autenticato")
+            data.error ? kickUser() : console.log("Utente autenticato")
             setUsername(data.currentUser.name)
             setUser__id(data.currentUser._id)
         })
 
-        fetch('http://localhost:3000/fetch-chats',{
+        fetch('http://172.22.12.13:3000/fetch-chats',{
             method:"POST",
             headers: {
                 "Content-Type":"application/json"
@@ -56,24 +58,54 @@ export default function ChatPage(prop){
             setChats(data.chats)
         })
 
+        const socketInstance = io("http://172.22.12.13:3000"); 
+        setSocket(socketInstance);
+
+        socketInstance.on("aggiorna-preview", () => {
+            fetch('http://172.22.12.13:3000/fetch-chats',{
+            method:"POST",
+            headers: {
+                "Content-Type":"application/json"
+            },
+            body: JSON.stringify({token})
+        })
+        .then(response => response.json())
+        .then(data => {
+            setChats(data.chats)
+        })
+        })
+
+        return () => {
+        socketInstance.disconnect(); // Clean up socket on umount
+        };
 
     },[])
 
-    useEffect(() =>  {
-        console.log(chats)
-    },[chats])
+    useEffect(() => {
+        const socketInstance = io("http://172.22.12.13:3000"); 
+        socketInstance.on("receive-message", (data) => {
+            console.log(data)
+          // Controlla che il messaggio ricevuto sia per la chat corrente
+          if (data.chatIdentifier === selectedChat.id) {
+              setDownloadedMessages(data.messages);  
+            }
+        });
+    
+        return () => {
+          socketInstance.off("receive-message");
+        };
+    }, [selectedChat.id, socket]);
     
 
-    function utenteNonAuth(){
+    function kickUser(){
         location.href = '/login'
         localStorage.removeItem('token-demo-dream')
     }
-
     function handleChatSelect(chatInfo){
         setSelectedChat({ id: chatInfo.id_chat, name: chatInfo.name_chat, foto: chatInfo.foto });
 
         const chat_id = chatInfo.id_chat
-        fetch('http://localhost:3000/fetch-messages',{
+        fetch('http://172.22.12.13:3000/fetch-messages',{
             method: "POST",
             headers: {
                 "Content-Type":"application/json"
@@ -123,9 +155,10 @@ function ChatBar(props){
         {props.chats.map( (chat,index) => {
             return  (
             <ChatPreview
-                key={index}
+                key={chat.id_chat + index}
                 mittente={chat.mittente}
                 foto={chat.foto_mittente}
+                ultimo_messaggio={chat.ultimo_messaggio.message}
                 id={chat.id_chat}
                 selectChat={props.selectChat}
             /> 
@@ -138,7 +171,6 @@ function ChatBar(props){
 function ChatPreview(props){
     const [foto, setFoto] = useState(noPic)
 
-
     useEffect(()=> {
         if (props.foto !== ""){
             setFoto(props.foto)
@@ -147,14 +179,19 @@ function ChatPreview(props){
 
     function handleChatClick(){
         props.selectChat({ id_chat: props.id, name_chat: props.mittente, foto: props.foto });
+
+        // Dispatch a custom event to notify ChatBar about chat selection
+        const event = new CustomEvent('chatPreviewClicked');
+        window.dispatchEvent(event);
     }
 
+    
     return (
     <div onClick={handleChatClick} className="container-chat-preview">
         <img src={ foto } className="foto-utente-preview" />
         <div className="container-dettagli-preview">
             <div className="nome-utente-preview"> {props.mittente}  </div>
-            <div className="messaggio-preview">Ciao caro, questo e un messaggio test.. </div>
+            <div className="messaggio-preview">{props.ultimo_messaggio}</div>
         </div>
     </div>
     )
@@ -163,24 +200,51 @@ function ChatPreview(props){
 function LiveChat(props){
  const [messagesArray, setMessagesArray] = useState([])
  const messagesEndRef = useRef(null);
+ const [loadedMessagesCount, setLoadedMessagesCount] = useState(10);
+ const [socket,setSocket] = useState(io("http://172.22.12.13:3000"))
+ const messagesStartRef = useRef(null);
 
 
+
+    //Setup event listenet x scrollBottom on ChatPreview click
  useEffect(() => {
-    setMessagesArray(props.messages)
-    scrollToBottom()
- },[props.messages])
+    function handleChatPreviewClicked() {
+        setTimeout(()=>{
+            scrollToBottom();
+        },200)
+        console.log("CLICK MI CHIEDI")
+    }
+    window.addEventListener('chatPreviewClicked', handleChatPreviewClicked);
 
- 
- useEffect(() => {
-    scrollToBottom()
- })
+    return () => {
+        window.removeEventListener('chatPreviewClicked', handleChatPreviewClicked);
+    };
+  }, []);
 
- 
- function handleSendMessage(newMessageArray){
+    //Carica messaggi solo 10, infinite scroll "Gestione Array"
+  useEffect(() => {
+    const visibleMessages = props.messages.slice(-loadedMessagesCount);
+    setMessagesArray(visibleMessages);
+  }, [props.messages, loadedMessagesCount]);
+
+  //Infinite Scroll
+  function handleLoadMoreMessages(event) {
+    const {scrollTop} = event.target
+
+    if(scrollTop <= 0){
+        setLoadedMessagesCount((prevCount) => prevCount + 10);
+        //il delay e per contrastart scrollToBottom, //!Da Refactor..
+        if (messagesStartRef.current) {
+            messagesStartRef.current.scrollIntoView({ block: "start",
+            inline: "start", });
+            
+        }
+    }
+  }
+  function handleSendMessage(newMessageArray){
     setMessagesArray(newMessageArray);
     scrollToBottom()
   };
-
   function scrollToBottom(){
     messagesEndRef.current.scrollIntoView({  block: "end"})
   }
@@ -194,12 +258,20 @@ function LiveChat(props){
                 <h4>{props.currentChatUser}</h4>
             </div>
 
-            <div className="live-chat">
+            <div className="live-chat" onScroll={handleLoadMoreMessages}>
                 <div className="message-container">
                     {messagesArray.map((message, index) => (
-                        <div key={index} className={`bubble-message ${message.sender_id === props.iam ? 'my-message' : 'external-message'}`}>
-                        <Message message={message.message} />
-                        </div>
+                        <>
+                            <div
+                                key={`${message.date}+${message.message}`} 
+                                className={`bubble-message ${message.sender_id === props.iam ? 'my-message' : 'external-message'}`}
+                                >
+                                <Message
+                                    message={message.message}  
+                                    />
+                            </div>
+                            {(index === messagesArray.length - loadedMessagesCount  + 9 ) ? <div ref={messagesStartRef}></div> : null}
+                        </>
                     ))}
                 </div>
                 <div className="messagesEndRef" ref={messagesEndRef}>&nbsp;</div>
@@ -216,7 +288,6 @@ function LiveChat(props){
 }
 
 function Message(props){
-    
     return(
         <div className={props.style}>
             <div className="message">
@@ -227,10 +298,14 @@ function Message(props){
 }
 
 function SendMessageToolBar(props) {
+    const [socket, setSocket] = useState(null)
+    
     async function handleMessageSubmit(event) {
+        const socketInstance = io("http://172.22.12.13:3000"); 
+        setSocket(socketInstance);
+
       event.preventDefault();
       const message = event.target[0].value;
-      event.target[0].value = ''
   
       // Se il messaggio è vuoto, non eseguire
       if (message === "") return;
@@ -244,41 +319,15 @@ function SendMessageToolBar(props) {
   
       try {
         // Manda messaggio al server
-        const sendMessageResponse = await fetch('http://localhost:3000/send-message', {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ messageObject, chatIdentifier }),
-        });
-        const sendMessageData = await sendMessageResponse.json();
-  
-        console.log(sendMessageData);
-  
-        // Fetcha messaggi aggiornati 
-        const fetchMessagesResponse = await fetch('http://localhost:3000/fetch-messages', {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ chat_id: chatIdentifier }),
-        });
-        const fetchMessagesData = await fetchMessagesResponse.json();
-  
-        props.onSend(fetchMessagesData);
+        socketInstance.emit("send-message", {chatIdentifier, messageObject})
+
+        //Pulisci campo messaggio dopo invio
+        event.target[0].value = ''
       } catch (error) {
         console.error("Errore nel mandare il messaggio: ", error);
       }
     }
 
-    useEffect(() => {
-        const socket = io("http://localhost:3000")
-  
-        socket.on("update-messages", () => {
-            
-        })
-    },[])
-  
     return (
       <form onSubmit={handleMessageSubmit} className="toolbar-chat">
         <input type="text" name="message" autoComplete="off" />
