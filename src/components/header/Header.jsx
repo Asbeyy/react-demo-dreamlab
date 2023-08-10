@@ -1,4 +1,4 @@
-export default function Header(){
+function Header(){
 
 
     return (
@@ -13,3 +13,5 @@ export default function Header(){
         </header>
     )
 }
+
+export default Header
