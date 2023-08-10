@@ -1,11 +1,10 @@
 
-import { useState, useEffect } from 'react';
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
-import RegisterPage from './register_page/RegisterPage.jsx'
-import LoginPage from './login_page/LoginPage.jsx'
-import ChatPage from './chat_page/ChatPage.jsx'
+import RegisterPage from './RegisterPage/RegisterPage.jsx'
+import LoginPage from './LoginPage/LoginPage.jsx'
+import ChatPage from './ChatPage/ChatPage.jsx'
 
 import '../style/index.css'
 

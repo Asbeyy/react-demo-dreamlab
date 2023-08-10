@@ -162,7 +162,7 @@ header {
   height: 600px;
   border-radius: 20px;
   padding: 0px 10px;
-  background-color: rgba(125, 48, 48, 0.5764705882);
+  background-color: rgb(22, 24, 31);
   -webkit-backdrop-filter: blur(20px);
           backdrop-filter: blur(20px);
   display: flex;
@@ -175,26 +175,40 @@ header {
 .container-chat-attive {
   width: 330px;
   height: 580px;
-  background-color: #171717;
   border-radius: 20px;
 }
 
 .container-chat {
   width: 540px;
   height: 580px;
-  background-color: #171717;
+  background-color: rgb(22, 24, 31);
   border-radius: 20px;
   display: flex;
   flex-direction: column;
+  align-items: center;
 }
 
 .topbar-chat {
-  width: calc(100% - 60px);
-  height: 9%;
-  background-color: rgb(78, 78, 78);
-  border-top-right-radius: 20px;
-  border-top-left-radius: 20px;
+  width: calc(98% - 60px);
+  height: 14%;
+  background-color: rgb(37, 41, 55);
+  border-radius: 20px;
   padding: 0px 30px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 8px;
+  color: #fff;
+}
+
+.topbar-chatbar {
+  width: calc(100% - 60px);
+  height: 25%;
+  background-color: rgb(37, 41, 55);
+  border-radius: 20px;
+  padding: 0px 30px;
+  margin-bottom: 10px;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -203,8 +217,18 @@ header {
 }
 
 .foto-dm-chat {
-  height: 35px;
-  width: 35px;
+  height: 45px;
+  width: 45px;
+  border-radius: 50%;
+  -o-object-fit: cover;
+     object-fit: cover;
+  -o-object-position: center center;
+     object-position: center center;
+}
+
+.foto-dm-chatbar {
+  height: 65px;
+  width: 65px;
   border-radius: 50%;
   -o-object-fit: cover;
      object-fit: cover;
@@ -214,10 +238,9 @@ header {
 
 .live-chat {
   width: calc(100% - 20px);
-  height: calc(83% - 20px);
-  border-top-right-radius: 20px;
-  border-top-left-radius: 20px;
-  padding: 10px;
+  height: calc(100% - 20px);
+  border-radius: 20px;
+  padding: 0 5px;
   display: flex;
   flex-direction: column;
   align-items: stretch;
@@ -237,7 +260,8 @@ header {
   max-width: calc(66.6666666667% - 20px);
   padding: 20px 30px;
   margin-bottom: 10px;
-  border-radius: 40px;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
   background-color: #242424;
   color: rgba(255, 255, 255, 0.868);
   display: flex;
@@ -251,12 +275,16 @@ header {
 }
 
 .my-message {
-  background-color: #075e54;
+  background-color: rgb(104, 132, 254);
+  border-bottom-left-radius: 10px;
+  color: rgba(255, 255, 255, 0.694);
   align-self: flex-end;
 }
 
 .external-message {
   background-color: #242424;
+  border-bottom-right-radius: 10px;
+  color: #878787;
   align-self: flex-start;
 }
 
@@ -267,24 +295,23 @@ header {
 .toolbar-chat {
   height: 8%;
   width: 100%;
-  background-color: rgb(78, 78, 78);
+  background-color: rgb(22, 24, 31);
   border-bottom-right-radius: 20px;
   border-bottom-left-radius: 20px;
+  margin-top: 8px;
   display: flex;
-  flex-direction: row;
-  justify-content: center;
   align-items: center;
   gap: 10px;
 }
 
 .toolbar-chat input {
-  width: 370px;
-  height: 60%;
+  width: 430px;
+  height: 35px;
   border-radius: 10px;
   border: none;
   text-indent: 10px;
   font-size: 18px;
-  background-color: #242424;
+  background-color: rgb(48, 52, 70);
   color: rgba(255, 255, 255, 0.614);
 }
 
@@ -293,16 +320,17 @@ header {
 }
 
 .toolbar-chat button {
-  width: 100px;
-  height: 65%;
+  width: 88px;
+  height: 38px;
   border-radius: 10px;
   border: none;
   font-size: 18px;
-  background-color: #242424;
+  background-color: rgb(104, 132, 254);
   color: rgba(255, 255, 255, 0.614);
 }
 
 .container-nome {
+  font-size: 20px;
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -318,35 +346,51 @@ header {
 }
 
 .container-chat-preview {
-  height: 80px;
-  background-color: rgb(78, 78, 78);
-  border-top: 0.5px rgba(255, 255, 255, 0.445) solid;
+  width: 90%;
+  min-height: 100px;
+  background-color: rgb(52, 54, 71);
   box-sizing: border-box;
-  padding: 0px 5px;
+  border-radius: 20px;
   display: flex;
-  flex-direction: row;
   align-items: center;
-  gap: 10px;
-  -webkit-user-select: none;
-     -moz-user-select: none;
-          user-select: none;
+  justify-content: center;
   cursor: pointer;
+  transform: translateX(5px);
+}
+
+.container-chat-chatbar {
+  height: 385px;
+  width: 100%;
+  background-color: rgb(37, 41, 55);
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow-y: scroll;
+  padding: 20px 0px;
+  gap: 5px;
 }
 
 .foto-utente-preview {
-  width: 50px;
-  height: 50px;
+  width: 60px;
+  height: 60px;
   border-radius: 50%;
   -o-object-fit: cover;
      object-fit: cover;
   -o-object-position: center;
      object-position: center;
+  margin-left: 10px;
+  margin-right: 10px;
+  transform: translateX(5px);
 }
 
 .container-dettagli-preview {
-  width: 70%;
-  height: 50px;
+  width: calc(65% - 10px);
+  margin-left: 9px;
+  height: 60px;
   color: white;
+  padding-right: 10px;
+  transform: translateY(-5px) translateX(10px);
   display: flex;
   flex-direction: column;
   gap: 5px;
@@ -386,4 +430,42 @@ input[type=password]:-moz-placeholder {
 input[type=email]:-webkit-input-placeholder,
 input[type=password]:-webkit-input-placeholder {
   color: #ffffff; /* Control text color */
+}
+
+.live-chat::-webkit-scrollbar-track {
+  background-color: rgba(255, 255, 255, 0); /* Change the color of the track */
+  border-radius: 20px;
+}
+
+.live-chat::-webkit-scrollbar {
+  width: 10px; /* Change the width of the scrollbar */
+  height: 5px;
+}
+
+.live-chat::-webkit-scrollbar-thumb {
+  background-color: rgb(104, 132, 254); /* Change the color of the scrollbar thumb */
+  border-radius: 20px; /* Round the corners of the thumb */
+}
+
+.live-chat::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(255, 255, 255, 0.788); /* Change the color of the thumb on hover */
+}
+
+.container-chat-chatbar::-webkit-scrollbar-track {
+  background-color: rgba(255, 255, 255, 0); /* Change the color of the track */
+  border-radius: 20px;
+}
+
+.container-chat-chatbar::-webkit-scrollbar {
+  width: 8px; /* Change the width of the scrollbar */
+  height: 1px;
+}
+
+.container-chat-chatbar::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 255, 255, 0); /* Change the color of the scrollbar thumb */
+  border-radius: 20px; /* Round the corners of the thumb */
+}
+
+.container-chat-chatbar::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(255, 255, 255, 0); /* Change the color of the thumb on hover */
 }/*# sourceMappingURL=index.css.map */

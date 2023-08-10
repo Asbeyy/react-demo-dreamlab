@@ -1,4 +1,4 @@
-import Header from '../header/Header.jsx'
+import Header from '../Header/Header.jsx'
 
 
 export default function RegisterPage(){
