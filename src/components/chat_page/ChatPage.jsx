@@ -31,7 +31,7 @@ export default function ChatPage(prop){
         //Se user loggato entra in /chat senza query
         !tokenQuery ? tokenQuery = token : null
 
-        fetch('http://172.22.12.13:3000/auth', {
+        fetch('https://demo-chat-dreamlab-b5a060fffd21.herokuapp.com//auth', {
             method:"POST",
             headers:{
                 "Content-Type":"application/json"
@@ -45,7 +45,7 @@ export default function ChatPage(prop){
             setUser__id(data.currentUser._id)
         })
 
-        fetch('http://172.22.12.13:3000/fetch-chats',{
+        fetch('https://demo-chat-dreamlab-b5a060fffd21.herokuapp.com//fetch-chats',{
             method:"POST",
             headers: {
                 "Content-Type":"application/json"
@@ -58,11 +58,11 @@ export default function ChatPage(prop){
             setChats(data.chats)
         })
 
-        const socketInstance = io("http://172.22.12.13:3000"); 
+        const socketInstance = io("https://demo-chat-dreamlab-b5a060fffd21.herokuapp.com/"); 
         setSocket(socketInstance);
 
         socketInstance.on("aggiorna-preview", () => {
-            fetch('http://172.22.12.13:3000/fetch-chats',{
+            fetch('https://demo-chat-dreamlab-b5a060fffd21.herokuapp.com//fetch-chats',{
             method:"POST",
             headers: {
                 "Content-Type":"application/json"
@@ -82,7 +82,7 @@ export default function ChatPage(prop){
     },[])
 
     useEffect(() => {
-        const socketInstance = io("http://172.22.12.13:3000"); 
+        const socketInstance = io("https://demo-chat-dreamlab-b5a060fffd21.herokuapp.com/"); 
         socketInstance.on("receive-message", (data) => {
             console.log(data)
           // Controlla che il messaggio ricevuto sia per la chat corrente
@@ -108,7 +108,7 @@ export default function ChatPage(prop){
         setSelectedChat({ id: chatInfo.id_chat, name: chatInfo.name_chat, foto: chatInfo.foto });
 
         const chat_id = chatInfo.id_chat
-        fetch('http://172.22.12.13:3000/fetch-messages',{
+        fetch('https://demo-chat-dreamlab-b5a060fffd21.herokuapp.com//fetch-messages',{
             method: "POST",
             headers: {
                 "Content-Type":"application/json"
@@ -205,7 +205,7 @@ function LiveChat(props){
  const [messagesArray, setMessagesArray] = useState([])
  const messagesEndRef = useRef(null);
  const [loadedMessagesCount, setLoadedMessagesCount] = useState(10);
- const [socket,setSocket] = useState(io("http://172.22.12.13:3000"))
+ const [socket,setSocket] = useState(io("https://demo-chat-dreamlab-b5a060fffd21.herokuapp.com/"))
  const messagesStartRef = useRef(null);
  const [firstTime,setFirstTime] = useState(true)
 
@@ -311,7 +311,7 @@ function SendMessageToolBar(props) {
     const [socket, setSocket] = useState(null)
     
     async function handleMessageSubmit(event) {
-        const socketInstance = io("http://172.22.12.13:3000"); 
+        const socketInstance = io("https://demo-chat-dreamlab-b5a060fffd21.herokuapp.com/"); 
         setSocket(socketInstance);
 
       event.preventDefault();

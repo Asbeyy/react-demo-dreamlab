@@ -20,7 +20,7 @@ export default function LoginPage(){
     }
 
     function postLogin(email,password){
-        fetch("http://172.22.12.13:3000/login",{
+        fetch("https://demo-chat-dreamlab-b5a060fffd21.herokuapp.com//login",{
             method: "POST",
             headers:{
                 "Content-type":"application/json"
