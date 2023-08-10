@@ -20,7 +20,7 @@ export default function LoginPage(){
     }
 
     function postLogin(email,password){
-        fetch("https://demo-chat-dreamlab-b5a060fffd21.herokuapp.com//login",{
+        fetch("https://demo-chat-dreamlab-b5a060fffd21.herokuapp.com/login",{
             method: "POST",
             headers:{
                 "Content-type":"application/json"
