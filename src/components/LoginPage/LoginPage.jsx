@@ -1,6 +1,5 @@
 
 import { useState, useEffect } from 'react'
-import Header from '../Header/Header.jsx'
 
 export default function LoginPage(){
 
@@ -40,7 +39,6 @@ export default function LoginPage(){
 
     return ( 
         <div className="body-login">
-            <Header/>
             <form onSubmit={login} className="form-login">
                 <div className="titolo-login"> Benvenuto 🤙 </div>
 

@@ -1,4 +1,4 @@
-import Header from '../Header/Header.jsx'
+
 
 
 export default function RegisterPage(){
@@ -36,7 +36,6 @@ export default function RegisterPage(){
 
     return ( 
     <div className="body-login">
-        <Header/>
         <form onSubmit={register} className="form-login">
             <div className="titolo-login"> Registrati 💬 </div>
 
