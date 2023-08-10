@@ -4,8 +4,8 @@ import { io } from 'socket.io-client'
 
 
 
-import ChatBar from "./Chatbar/Chatbar"
-import LiveChat from "./LiveChat/LiveChat"
+import ChatBar from "./Chatbar/Chatbar.jsx"
+import LiveChat from "./LiveChat/LiveChat.jsx"
 import '../../style/index.css'
 
 export default function ChatPage(prop){
