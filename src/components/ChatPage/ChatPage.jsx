@@ -4,7 +4,7 @@ import { io } from 'socket.io-client'
 
 
 
-import ChatBar from "./Chatbar/Chatbar.jsx"
+import ChatBar from "./ChatBar/ChatBar.jsx"
 import LiveChat from "./LiveChat/LiveChat.jsx"
 import '../../style/index.css'
 
