@@ -33,7 +33,7 @@ export default function LoginPage(){
                 return
             }
             localStorage.setItem('token-demo-dream',token)
-            location.href = `/chat?tokenQuery=${token}`
+            location.href = `/chat`
         })
     }
 

@@ -93,6 +93,11 @@ header{
 
 }
 
+.body-app{
+    @include fullscreen();
+    @include center(column);
+    background: linear-gradient(45deg,#fffffff0,rgba(180, 180, 180, 0.961), rgba(255, 255, 255, 0.732))
+}
 .form-login{
     min-height: 400px;
     width: calc(100vw - 300px);
@@ -308,8 +313,13 @@ header{
 }
 
 .logos-search{
-    height: 24px;
+    padding: 5px;
+    background-color: rgb(22,24,31);
+    border-radius: 50%;
+    height: 18px;
     transform: translateX(5px);
+
+    cursor: pointer;
     
 }
 
@@ -658,4 +668,60 @@ input[type="password"]:-webkit-input-placeholder {
   }
   .container-chat-chatbar::-webkit-scrollbar-thumb:hover {
     background-color: rgba(255, 255, 255, 0); /* Change the color of the thumb on hover */
+  }
+
+  .unauth{
+    height: 100vh;
+    width: 100vw;
+    @include center(row);
+    font-size: 50px;
+
+    background-color: #171717;
+    color: white;
+  }
+
+  .not-found{
+        height: 100vh;
+        width: 100vw;
+        @include center(column);
+        font-size: 50px;
+    
+        background-color: #171717;
+        color: white;
+
+        gap: 100px;
+    
+  }
+
+
+  .container-redirect-home{
+    @include center(column);
+    font-size: 25px;
+
+  }
+
+  
+
+  .container-redirect-home button{
+    height: 40px;
+    width: 320px;
+    margin-top: 10px;
+
+
+    border: none;
+    border-radius: 20px;
+
+    font-size: 18px;
+    background-color: #242424;
+    color: white;
+
+    transition: 200ms;
+  }
+
+  .container-redirect-home button:hover{
+    background-color: #515151;
+  }
+
+  .container-redirect-home button:active{
+    background-color: #3a3939;
   }

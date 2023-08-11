@@ -6,6 +6,7 @@ import { io } from 'socket.io-client'
 
 import ChatBar from "./ChatBar.jsx"
 import LiveChat from "./LiveChat.jsx"
+import Unauth from "../Redirects/Unauth.jsx"
 import '../../style/index.css'
 
 export default function ChatPage(prop){
@@ -25,16 +26,12 @@ export default function ChatPage(prop){
   
 
     useEffect(() => {
-        if (!token) location.href = '/login'
+        if (!token) {
+            location.href = '/login'
+            return
+        }
 
-        /**
-         * Richiesta con Queries
-         */
-        const url = new URL(window.location.href);
-        let tokenQuery = url.searchParams.get('tokenQuery');
-
-        //Se user loggato entra in /chat senza query
-        !tokenQuery ? tokenQuery = token : null
+        const tokenQuery = token
 
         fetch('https://demo-chat-dreamlab-b5a060fffd21.herokuapp.com/auth', {
             method:"POST",
@@ -132,8 +129,9 @@ export default function ChatPage(prop){
 
    
 
-    return ( 
-    <div className="body-login">
+    return (
+        <>
+        {!username ? <Unauth/> :  <div className="body-app">
          <div className="chatapp">
             <ChatBar
                 username={username}
@@ -152,7 +150,9 @@ export default function ChatPage(prop){
                 iam={user__id}
             />
          </div>
-    </div>
+    </div>}
+        </>
+   
     )
 }
 

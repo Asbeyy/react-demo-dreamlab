@@ -12,7 +12,10 @@ export default function ResearchBar(props) {
     //TODO Aggiungere check per email lowercase
   }
   function handleSearchClick(){
-    if (search === '') return
+    if (search === '') {
+      alert("Inserire email contatto da aggiungere") 
+      return
+    }
     console.log(search)
 
     const iam= props.iam
@@ -35,6 +38,7 @@ export default function ResearchBar(props) {
       location.reload()
     })
   }
+ 
 
   return (
       <div className='barra-ricerca'> 

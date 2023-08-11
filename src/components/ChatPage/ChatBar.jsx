@@ -46,7 +46,6 @@ function ChatBar(props){
 
 function ChatPreview(props){
     const [foto, setFoto] = useState(noPic)
-    const [isSelected,setIsSelected] = useState(false)
 
     useEffect(()=> {
         if (props.foto !== ""){
@@ -56,11 +55,11 @@ function ChatPreview(props){
 
     function handleChatClick(){
         props.selectChat({ id_chat: props.id, name_chat: props.mittente, foto: props.foto });
-        setIsSelected(true)
 
         // Notifica Live chat del click di una nuova chat
         const event = new CustomEvent('chatPreviewClicked');
         window.dispatchEvent(event);
+
     }
 
         
