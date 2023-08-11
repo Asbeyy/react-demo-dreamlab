@@ -55,7 +55,7 @@ function ChatPreview(props) {
     if (props.foto !== "") {
       setFoto(props.foto);
     }
-  }, []);
+  }, [props.foto]);
 
   function handleChatClick() {
     props.selectChat({
@@ -97,11 +97,6 @@ function ChatPreview(props) {
 
     if (isSameDay(now, messageDate)) {
       return `${hours}:${minutes}`;
-    } else if (
-      now.getDate() - messageDate.getDate() === 1 &&
-      isSameDay(now, messageDate)
-    ) {
-      return "Yesterday";
     } else {
       const options = { month: "short", day: "numeric" };
       return messageDate.toLocaleDateString(undefined, options);
@@ -132,3 +127,10 @@ function ChatPreview(props) {
 }
 
 export default ChatBar;
+
+
+// ChatBar.propTypes = {
+//   foto: PropTypes.string, 
+//   username: PropTypes.string, 
+//   chats: PropTypes.array, 
+// };

@@ -6,7 +6,7 @@ import LiveChat from "./LiveChat.jsx";
 import Unauth from "../Redirects/Unauth.jsx";
 import "../../style/index.css";
 
-export default function ChatPage(prop) {
+export default function ChatPage() {
   const [token, setToken] = useState(localStorage.getItem("token-demo-dream"));
 
   const [userEmail, setUserEmail] = useState(undefined);
@@ -86,7 +86,7 @@ export default function ChatPage(prop) {
     return () => {
       socketInstance.disconnect(); // Clean up socket on umount
     };
-  }, []);
+  }, [token]);
 
   useEffect(() => {
     const socketInstance = io(

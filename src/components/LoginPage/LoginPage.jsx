@@ -2,11 +2,11 @@ import { useState, useEffect } from "react";
 
 export default function LoginPage() {
   const [loginStatus, setLoginStatus] = useState("error-login hidden");
-  const [token, setToken] = useState(localStorage.getItem("token-demo-dream"));
+  const [token] = useState(localStorage.getItem("token-demo-dream"));
 
   useEffect(() => {
     if (token) location.href = `/chat`;
-  }, []);
+  }, [token]);
 
   function login(event) {
     event.preventDefault();
@@ -41,8 +41,7 @@ export default function LoginPage() {
         <div className="titolo-login"> Benvenuto 🤙 </div>
 
         <div className="sottotitolo-login">
-          {" "}
-          Accedi all'area riservata per chattare{" "}
+          Accedi all&apos;area riservata per chattare
         </div>
 
         <div className="container-login">
