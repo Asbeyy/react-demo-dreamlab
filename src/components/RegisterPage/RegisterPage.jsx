@@ -48,7 +48,7 @@ export default function RegisterPage(){
                 </div>
                 <div className="container-input-login">
                     <label>Email</label>
-                    <input className="input-login" type="text" name="email" autoComplete="off"/>
+                    <input className="input-login" type="email" name="email" autoComplete="off"/>
                 </div>
                 <div className="container-input-login">
                     <label>Password</label>
