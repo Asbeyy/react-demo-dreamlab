@@ -4,6 +4,8 @@ body{
     margin: 0;
     padding: 0;
     font-family: 'Questrial', sans-serif;
+    
+    user-select: none;
 }
 
 
@@ -45,6 +47,12 @@ header{
 
 .logo{
     font-size: 40px;
+}
+
+.logo-telefono{
+    height: 20px;
+    color:  rgb(104,132,254);
+    cursor:pointer;
 }
 
 .container-left{
@@ -231,11 +239,26 @@ header{
 
     display: flex;
     flex-direction: row;
-    align-items: center;
+    justify-content: space-between;
     gap: 15px;
     margin-bottom: 8px;
     color: $text;
 }
+
+.holder-info-chat{
+    display: flex;
+    flex-direction: row;
+    gap: 15px;
+    align-items: center;
+}
+
+.container-telefono-chat{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+}
+
 
 .topbar-chatbar{
     width: calc(100% - 60px);
@@ -249,11 +272,20 @@ header{
     margin-bottom: 10px;
 
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     align-items: center;
     gap: 15px;
     
     color: $text;
+}
+
+.container-profilo-chatbar{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    margin-top: 15px;
+    margin-bottom: 5px;
+    gap:10px
 }
 
 .foto-dm-chat{
@@ -271,8 +303,47 @@ header{
     border-radius: 50%;
 
     object-fit: cover;
-    object-position: center center
+    object-position: center center;
+
 }
+
+.logos-search{
+    height: 24px;
+    transform: translateX(5px);
+    
+}
+
+.barra-ricerca{
+    background-color: rgb(52,54,71);
+    width: 290px;
+    height: 35px;
+    border-radius: 20px;
+    box-sizing: border-box;
+
+    padding: 0 10px;
+    
+    transform: translateY(-8px);
+    align-items: center;
+    display: flex;
+}
+
+.input-ricerca{
+    box-sizing: border-box;
+    background: none;
+    width: calc(100% - 24px);
+    transform: translateX(10px);
+    height: 100%;
+    border-radius: 20px;
+    border: none;
+
+    color: white;
+}
+
+
+.input-ricerca:focus{
+    outline: none;
+}
+
 
 .live-chat{
     width: calc(100% - 20px);
@@ -285,6 +356,7 @@ header{
     flex-direction: column;
     align-items: stretch;
     overflow-y: scroll;
+    overflow-x: hidden;
 }
 
 .message-container {
@@ -300,8 +372,8 @@ header{
     min-width: 40px;
     max-width: calc(100% / 1.5 - 20px);
 
-    padding: 20px 30px;
-    margin-bottom: 10px;
+    padding: 15px 0px;
+    margin-bottom: 20px;
    border-top-left-radius: 10px;
    border-top-right-radius: 10px;
 
@@ -313,9 +385,37 @@ header{
     justify-content: center;
 }
 
+
+.container-elemento-messaggio{
+    width: 100%;
+    padding: 0 30px;
+    display: flex;
+    flex-direction: column;
+}
+
+.ora-chat-message{
+    width: 100%;
+    text-align: center;
+    font-size: 12px;
+    
+}
+
+.my-hour{
+    align-self: flex-end;
+    transform: translateY(30px) translateX(50%);
+}
+
+.external-hour{
+    transform: translateY(30px) translateX(-50%);
+    
+    align-self: flex-start;
+}
+
+
 .message{
     width: 100%;
     word-wrap: break-word;
+    transform: translateY(7px);
 }
 
 .my-message{
@@ -362,7 +462,7 @@ header{
     border: none;
 
     text-indent: 10px;
-    font-size: 18px ;
+    font-size: 16px ;
 
     background-color: rgb(48,52,70);
     color: rgba(255, 255, 255, 0.614);
@@ -378,11 +478,12 @@ header{
     border-radius: 10px;
     border: none;
     font-size: 18px ;
-    background-color: rgb(104,132,254);
+    background-color: rgba(196, 254, 104, 0.524);
     color: rgba(255, 255, 255, 0.614);
 }
 
 .container-nome{
+    height: 30px;
     font-size: 20px;
     @include center(row);
     gap:5px;
@@ -393,6 +494,7 @@ header{
     width: 7px;
     background-color: greenyellow;
     border-radius: 50%;
+    transform: translateY(2px);
 }
 
 // Container (BARRA LATERALE) Chat Preview
@@ -413,6 +515,11 @@ header{
     cursor: pointer;
     transform: translateX(5px) //translateY(15px);
 }
+
+.selected-message-box{
+    background-color: rgb(104,132,254);
+}
+
 
 .container-chat-chatbar{
     height: calc(425px - 40px);
@@ -457,6 +564,22 @@ header{
     justify-content: center;
 
     
+}
+
+.ora-messaggio-preview{
+    font-size: 14px;
+}
+
+.holder-ora-nome-preview{
+    box-sizing: border-box;
+    padding-right: 10px;
+
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
+    align-items: center;
 }
 
 .nome-utente-preview{

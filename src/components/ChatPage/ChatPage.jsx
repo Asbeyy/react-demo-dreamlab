@@ -11,6 +11,7 @@ import '../../style/index.css'
 export default function ChatPage(prop){
     const [token, setToken] = useState(localStorage.getItem('token-demo-dream'))
 
+    const [userEmail, setUserEmail] = useState(undefined)
     const [username, setUsername] = useState(undefined)
     const [userpic, setUserPic] = useState(undefined)
     const [user__id, setUser__id] = useState(undefined)
@@ -45,6 +46,7 @@ export default function ChatPage(prop){
         .then(response => response.json())
         .then(data => {
             data.error ? kickUser() : console.log("Utente autenticato")
+            setUserEmail(data.currentUser.email)
             setUsername(data.currentUser.name)
             setUserPic(data.currentUser.foto)
             setUser__id(data.currentUser._id)
@@ -124,6 +126,8 @@ export default function ChatPage(prop){
         .then( data => {
             setDownloadedMessages(data)
         })
+
+        
     };
 
    
@@ -136,6 +140,8 @@ export default function ChatPage(prop){
                 foto={userpic}
                 chats={chats}
                 selectChat={handleChatSelect}
+                selectedChat={selectedChat.id}
+                iam={userEmail}
             />
             
             <LiveChat

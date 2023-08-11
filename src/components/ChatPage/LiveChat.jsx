@@ -19,7 +19,7 @@ function LiveChat(props){
            setLoadedMessagesCount(10)
            setTimeout(()=>{
                scrollToBottom();
-           },200)
+           },400)
        }
        window.addEventListener('chatPreviewClicked', handleChatPreviewClicked);
        window.addEventListener('scrollToBottom', scrollToBottom)
@@ -61,13 +61,25 @@ function LiveChat(props){
    
        return(
    
-           <>
-              { /* Conditional Rendering, se non hai selezionato chat, display solo  */}
+              <>
+               { /* Conditional Rendering, se non hai selezionato chat, display solo  */}
                {props.currentChatId === undefined ? null : 
                <div className="container-chat">
                    <div className="topbar-chat">
+
+                    <div className="holder-info-chat">
                        <img src={props.currentChatPhoto || noPic} className="foto-dm-chat" />
                        <h4>{props.currentChatUser}</h4>
+                    </div>
+
+                    <div className="container-telefono-chat">
+                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="logo-telefono">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 01-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z" />
+                      </svg>
+                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="logo-telefono">
+                        <path strokeLinecap="round" d="M15.75 10.5l4.72-4.72a.75.75 0 011.28.53v11.38a.75.75 0 01-1.28.53l-4.72-4.72M4.5 18.75h9a2.25 2.25 0 002.25-2.25v-9a2.25 2.25 0 00-2.25-2.25h-9A2.25 2.25 0 002.25 7.5v9a2.25 2.25 0 002.25 2.25z" />
+                      </svg>
+                    </div>
                    </div>
    
                    <div className="live-chat" onScroll={handleLoadMoreMessages}>
@@ -79,7 +91,9 @@ function LiveChat(props){
                                        className={`bubble-message ${message.sender_id === props.iam ? 'my-message' : 'external-message'}`}
                                        >
                                        <Message
-                                           message={message.message}  
+                                           message={message.message}
+                                           ora_ricevuto={message.date}
+                                           style={message.sender_id === props.iam ? 'my-hour' : 'external-hour'}
                                            />
                                    </div>
                                
@@ -93,20 +107,37 @@ function LiveChat(props){
                        chat_id={props.currentChatId}
                        onSend={handleSendMessage}
                    />
-               </div>}
-           </>
+                </div>}
+              </>
        )
 }
    
 function Message(props){
+
+  function formatUnixToHour(time){
+    if (!time) return ''
+  
+    const date = new Date(time)
+
+    const hours = String(date.getHours()).padStart(2, '0');
+    const minutes = String(date.getMinutes()).padStart(2, '0');
+
+    return `${hours}:${minutes}`
+  }
+
+
        return(
-           <div className={props.style}>
+           <div className="container-elemento-messaggio">
                <div className="message">
                    {props.message}
                </div>
+               <div className={`ora-chat-message ${props.style}`}>{formatUnixToHour(props.ora_ricevuto)}</div>
            </div>
+        
        )
 }
+
+
    
 function SendMessageToolBar(props) {
        const [socket, setSocket] = useState(null)
@@ -141,7 +172,7 @@ function SendMessageToolBar(props) {
    
        return (
          <form onSubmit={handleMessageSubmit} className="toolbar-chat">
-           <input type="text" name="message" autoComplete="off" />
+           <input placeholder="Messaggio.." type="text" name="message" autoComplete="off" />
            <button type="submit">Invia</button>
          </form>
        );

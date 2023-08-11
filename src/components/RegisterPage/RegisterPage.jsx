@@ -44,15 +44,15 @@ export default function RegisterPage(){
             <div className="container-login">
             <div className="container-input-login">
                     <label>Username</label>
-                    <input className="input-login" type="text" name="name"/>
+                    <input className="input-login" type="text" name="name" autoComplete="off"/>
                 </div>
                 <div className="container-input-login">
                     <label>Email</label>
-                    <input className="input-login" type="text" name="email"/>
+                    <input className="input-login" type="text" name="email" autoComplete="off"/>
                 </div>
                 <div className="container-input-login">
                     <label>Password</label>
-                    <input className="input-login" type="password" name="password"/>
+                    <input className="input-login" type="password" name="password" autoComplete="off"/>
                 </div>
                 <button type='submit' className="button-login">
                     Login
