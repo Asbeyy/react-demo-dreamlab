@@ -1,3 +1,8 @@
+import { handleCreateAccountF } from "../Reusables/Reusables";
+
+
+
+
 export default function RegisterPage() {
   function register(event) {
     event.preventDefault();
@@ -10,14 +15,7 @@ export default function RegisterPage() {
   }
 
   function postRegister(email, password, name) {
-    fetch("https://demo-chat-dreamlab-b5a060fffd21.herokuapp.com/create-user", {
-      method: "POST",
-      headers: {
-        "Content-type": "application/json",
-      },
-      body: JSON.stringify({ name, email, password }),
-    })
-      .then((response) => response.json())
+    handleCreateAccountF(name, email, password)
       .then((token) => {
         if (token.error) {
           alert(token.error);

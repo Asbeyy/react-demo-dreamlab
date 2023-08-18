@@ -11,13 +11,20 @@ function LiveChat(props) {
   //Setup event listenet x scrollBottom on ChatPreview click
   useEffect(() => {
     function handleChatPreviewClicked() {
+      //Al cambio chat, reset il counter messaggi iniziali a 10
       setLoadedMessagesCount(10);
+
+      //! 400ms delay, da refactor
       setTimeout(() => {
         scrollToBottom();
       }, 400);
     }
     window.addEventListener("chatPreviewClicked", handleChatPreviewClicked);
-    window.addEventListener("scrollToBottom", scrollToBottom);
+    window.addEventListener("scrollToBottom", ()=>{
+      setTimeout(()=>{
+        scrollToBottom()
+      },20)
+    });
 
     return () => {
       window.removeEventListener(
@@ -25,8 +32,9 @@ function LiveChat(props) {
         handleChatPreviewClicked
       );
     };
+    
+    //! Avrei potuto usare dependencies x handleChatPrvCl al cambio di props.messages invece di EventListener.
   }, []);
-
   //Carica messaggi solo 10, infinite scroll "Gestione Array"
   useEffect(() => {
     const visibleMessages = props.messages.slice(-loadedMessagesCount);
@@ -36,23 +44,19 @@ function LiveChat(props) {
   function handleLoadMoreMessages(event) {
     const { scrollTop } = event.target;
 
+
+    //Se e la prima entrata 
     if (firstTime) {
       scrollToBottom();
       setFirstTime(false);
       return;
     }
 
-    //Infinite Scroll effect, buffer zone?
+    //Infinite Scroll effect, buffer zone 200px
     if (scrollTop <= 200) {
       setLoadedMessagesCount((prevCount) => prevCount + 10);
     }
   }
-
-  function handleSendMessage(newMessageArray) {
-    setMessagesArray(newMessageArray);
-    scrollToBottom();
-  }
-
   function handleCallClick() {
     alert("Bottoni non attivi");
   }
@@ -139,7 +143,7 @@ function LiveChat(props) {
           <SendMessageToolBar
             iam={props.iam}
             chat_id={props.currentChatId}
-            onSend={handleSendMessage}
+            onSend={scrollToBottom}
           />
         </div>
       )}
@@ -173,17 +177,19 @@ function SendMessageToolBar(props) {
   const [socket, setSocket] = useState(null);
 
   async function handleMessageSubmit(event) {
-    const socketInstance = io(
-      "https://demo-chat-dreamlab-b5a060fffd21.herokuapp.com"
-    );
+    const socketInstance = io("https://demo-chat-dreamlab-b5a060fffd21.herokuapp.com");
     setSocket(socketInstance);
 
+    //Prevent ricarica pagina con submit form messaggio
     event.preventDefault();
+
+    //Target value del field messaggio
     const message = event.target[0].value;
 
     // Se il messaggio è vuoto, non eseguire
     if (message === "") return;
 
+    //Compone elementi da mandare al DB per salvare il messaggio (ID_CHAT & {ID_MITTENTE.MESSAGGIO.DATA})
     const chatIdentifier = props.chat_id;
     const messageObject = {
       sender_id: props.iam,
@@ -194,7 +200,6 @@ function SendMessageToolBar(props) {
     try {
       // Manda messaggio al server
       socketInstance.emit("send-message", { chatIdentifier, messageObject });
-
       //Pulisci campo messaggio dopo invio
       event.target[0].value = "";
     } catch (error) {

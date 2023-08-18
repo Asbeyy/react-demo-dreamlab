@@ -1,13 +1,10 @@
 import noPic from "../../assets/no-pfp.png";
-
 import { useState, useEffect } from "react";
-
 import ResearchBar from "./ResearchBar.jsx";
 
 function ChatBar(props) {
   return (
     <div className="container-chat-attive">
-
 
       <div className="topbar-chatbar">
         <div className="container-profilo-chatbar">
@@ -64,7 +61,7 @@ function ChatPreview(props) {
       foto: props.foto,
     });
 
-    // Notifica Live chat del click di una nuova chat
+    // Notifica Live chat del click di una nuova chat (per scrollDown(), resetCounterMessaggi a 10)
     const event = new CustomEvent("chatPreviewClicked");
     window.dispatchEvent(event);
   }
@@ -78,7 +75,6 @@ function ChatPreview(props) {
       return text;
     }
   }
-
   function formatLastMessageTime(time) {
     if (!time) {
       return "";

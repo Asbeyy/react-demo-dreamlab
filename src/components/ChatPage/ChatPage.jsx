@@ -6,23 +6,25 @@ import LiveChat from "./LiveChat.jsx";
 import Unauth from "../Redirects/Unauth.jsx";
 import "../../style/index.css";
 
+import { authenticateUserF, ActiveChatsF, DownloadChatMessagesF } from "../Reusables/Reusables.js";
+
 export default function ChatPage() {
-  const [token, setToken] = useState(localStorage.getItem("token-demo-dream"));
+  const [token] = useState(localStorage.getItem("token-demo-dream"));
 
   const [userEmail, setUserEmail] = useState(undefined);
   const [username, setUsername] = useState(undefined);
   const [userpic, setUserPic] = useState(undefined);
   const [user__id, setUser__id] = useState(undefined);
+
   const [chats, setChats] = useState([]);
+  const [downloadedMessages, setDownloadedMessages] = useState([]);
+  const [socket, setSocket] = useState(null);
 
   const [selectedChat, setSelectedChat] = useState({
     id: undefined,
     name: undefined,
     foto: undefined,
   });
-  const [downloadedMessages, setDownloadedMessages] = useState([]);
-
-  const [socket, setSocket] = useState(null);
 
   useEffect(() => {
     if (!token) {
@@ -30,16 +32,8 @@ export default function ChatPage() {
       return;
     }
 
-    const tokenQuery = token;
-
-    fetch("https://demo-chat-dreamlab-b5a060fffd21.herokuapp.com/auth", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ tokenQuery }),
-    })
-      .then((response) => response.json())
+    //Autentica Utente e salva dati sessione in states
+    authenticateUserF(token)
       .then((data) => {
         data.error ? kickUser() : console.log("Utente autenticato");
         setUserEmail(data.currentUser.email);
@@ -48,37 +42,19 @@ export default function ChatPage() {
         setUser__id(data.currentUser._id);
       });
 
-    fetch("https://demo-chat-dreamlab-b5a060fffd21.herokuapp.com/fetch-chats", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ token }),
-    })
-      .then((response) => response.json())
+    //Fetcha Chat Aperte
+    ActiveChatsF(token)
       .then((data) => {
         console.log(data.chats);
         setChats(data.chats);
       });
 
-    const socketInstance = io(
-      "https://demo-chat-dreamlab-b5a060fffd21.herokuapp.com"
-    );
+    const socketInstance = io("https://demo-chat-dreamlab-b5a060fffd21.herokuapp.com");
     setSocket(socketInstance);
 
     socketInstance.on("aggiorna-preview", () => {
-      fetch(
-        "https://demo-chat-dreamlab-b5a060fffd21.herokuapp.com/fetch-chats",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ token }),
-        }
-      )
-        .then((response) => response.json())
-        .then((data) => {
+      ActiveChatsF(token)
+      .then((data) => {
           setChats(data.chats);
         });
     });
@@ -97,11 +73,12 @@ export default function ChatPage() {
       // Controlla che il messaggio ricevuto sia per la chat corrente
       if (data.chatIdentifier === selectedChat.id) {
         setDownloadedMessages(data.messages);
-        // Dispatch a custom event to notify ChatBar about chat selection
-        const event = new CustomEvent("chatPreviewClicked");
+
+        // Dispatch a custom event to scroll to Bottom on new message received
+        const event = new CustomEvent("scrollToBottom");
         window.dispatchEvent(event);
       }
-    });
+    }); 
 
     return () => {
       socketInstance.off("receive-message");
@@ -119,18 +96,7 @@ export default function ChatPage() {
       foto: chatInfo.foto,
     });
 
-    const chat_id = chatInfo.id_chat;
-    fetch(
-      "https://demo-chat-dreamlab-b5a060fffd21.herokuapp.com/fetch-messages",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ chat_id }),
-      }
-    )
-      .then((response) => response.json())
+    DownloadChatMessagesF(chatInfo.id_chat)
       .then((data) => {
         setDownloadedMessages(data);
       });

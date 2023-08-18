@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { loginHandlerF } from "../Reusables/Reusables";
 
 export default function LoginPage() {
   const [loginStatus, setLoginStatus] = useState("error-login hidden");
@@ -7,7 +8,6 @@ export default function LoginPage() {
   useEffect(() => {
     if (token) location.href = `/chat`;
   }, [token]);
-
   function login(event) {
     event.preventDefault();
     const email = event.target[0].value;
@@ -15,24 +15,16 @@ export default function LoginPage() {
 
     postLogin(email, password);
   }
-
   function postLogin(email, password) {
-    fetch("https://demo-chat-dreamlab-b5a060fffd21.herokuapp.com/login", {
-      method: "POST",
-      headers: {
-        "Content-type": "application/json",
-      },
-      body: JSON.stringify({ email, password }),
-    })
-      .then((response) => response.json())
-      .then((token) => {
-        if (token.error) {
-          setLoginStatus("error-login");
-          return;
-        }
-        localStorage.setItem("token-demo-dream", token);
-        location.href = `/chat`;
-      });
+    loginHandlerF(email,password)
+    .then((token) => {
+      if (token.error) {
+        setLoginStatus("error-login");
+        return;
+      }
+      localStorage.setItem("token-demo-dream", token);
+      location.href = `/chat`;
+    });
   }
 
   return (
